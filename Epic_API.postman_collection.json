@@ -1,0 +1,201 @@
+{
+	"info": {
+		"_postman_id": "fd09e0c0-1ec3-43a7-959d-9ddafce22e01",
+		"name": "Epic_API",
+		"description": "A Epic_API é uma API REST que possibilita o gerenciamento de usuários, sendo possível adicionar, editar e excluir novos registros.Também contempla a criação automática de logs de alterações para cada usuário.\n\n# Getting started\nA Epic_API foi desenvolvida usando PHP 7.4 e MySql v8.0.22 portanto certifique-se de configurar seu ambiente de acordo.\n\nO projeto pode ser encontrado no [GitHub](https://github.com/LeMajstor/epicAPI). No seu terminal digite para copiar o projeto para o seu computador.\n\n```\ngit init \ngit clone https://github.com/LeMajstor/epicAPI\ncd epicAPI\n```\nPara gerar o arquivo `.env` em seu ambiente execute o comando a seguir:\n\n```\nphp artisan key:generate\n```\nPor fim, para preparar as tabelas do banco para receber os dados execute os migrations com o seguinte comando:\n\n```\nphp artisan migrate\n```\n\n# Contact Support\n\n- Name: Edinaldo Ribeiro\n- Email: edinaldoprofi99@gmail.com",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "ListAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://local.epic.com.br/users",
+							"protocol": "http",
+							"host": [
+								"local",
+								"epic",
+								"com",
+								"br"
+							],
+							"path": [
+								"users"
+							]
+						},
+						"description": "Lista todos os usuários ativos sem paginação. Não requer parâmetros."
+					},
+					"response": []
+				},
+				{
+					"name": "listWithLogs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://local.epic.com.br/users/5",
+							"protocol": "http",
+							"host": [
+								"local",
+								"epic",
+								"com",
+								"br"
+							],
+							"path": [
+								"users",
+								"5"
+							]
+						},
+						"description": "Lista todos os atributos de um usuário juntamente com os seus últimos 5 logs de alterações caso haja.\n\nMétodo    | Rota         |\n--------- | ------------ |\nGET       | /users/{id}  |\n\nSe um valor de `id` for diferente de um inteiro ou não exista usuário com o valor informado o servidor retornará erro."
+					},
+					"response": []
+				},
+				{
+					"name": "insertUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "http://local.epic.com.br/users",
+							"protocol": "http",
+							"host": [
+								"local",
+								"epic",
+								"com",
+								"br"
+							],
+							"path": [
+								"users"
+							]
+						},
+						"description": "Insere um novo usuário no banco.\n\nCHAVE\t         | DESCRIÇÃO\n---------        | ------\nname             | required max:50\nemail            | required email max:100 unique\ndocument_number  | required max:25\nphone_number     | required max:15\ncountry          | required max:2\n\nVerifique se as condições na coluna descrição são cumpridas antes de enviar a requisição ao servidor para que não retorne erro."
+					},
+					"response": []
+				},
+				{
+					"name": "updateUser",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [],
+							"options": {
+								"urlencoded": {}
+							}
+						},
+						"url": {
+							"raw": "http://local.epic.com.br/users/4",
+							"protocol": "http",
+							"host": [
+								"local",
+								"epic",
+								"com",
+								"br"
+							],
+							"path": [
+								"users",
+								"4"
+							]
+						},
+						"description": "Altera um registro de usuário já existente.\n\nCHAVE\t         | DESCRIÇÃO\n---------        | ------\nname             |  max:50\nemail            |  email max:100 unique\ndocument_number  |  max:25\nphone_number     |  max:15\ncountry          |  max:2\n\nVerifique se as condições na coluna descrição são cumpridas antes de enviar a requisição ao servidor para que não retorne erro. Diferentemente da da rota `insertUser` aqui os requisitos não são todos obrigatórios, sendo possível editar um ou mais itens.\n\nMétodo    | Rota         |\n--------- | ------------ |\nPUT       | /users/{id}  |\n\n\nCaso não exista um usuário com o `id` o servidor retornará erro. Caso o valor de `id` não seja numérico o servidor retornará erro."
+					},
+					"response": []
+				},
+				{
+					"name": "deleteUser",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://local.epic.com.br/users/6",
+							"protocol": "http",
+							"host": [
+								"local",
+								"epic",
+								"com",
+								"br"
+							],
+							"path": [
+								"users",
+								"6"
+							]
+						},
+						"description": "Remove um usuário do banco.\n\nMétodo       | Rota         |\n------------ | ------------ |\nDELETE       | /users/{id}  |\n\nSe um valor diferente de inteiro for informado ao `id` o servidor retornará erro. Da a mesma forma, se não houver um usuário com o `id` informado o servidor também retornará erro."
+					},
+					"response": []
+				}
+			],
+			"description": "Esta seção contempla as rotas de listagem, inserção, alteração e exclusão de usuários no banco de dados.",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Logs",
+			"item": [
+				{
+					"name": "listAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://local.epic.com.br/logs/1/100",
+							"protocol": "http",
+							"host": [
+								"local",
+								"epic",
+								"com",
+								"br"
+							],
+							"path": [
+								"logs",
+								"1",
+								"100"
+							]
+						},
+						"description": "Lista todos os logs de todos os usuários com paginação a cada 5 itens.\n\nMétodo    | Rota                   |\n--------- | -----------------------|\nGET       | /logs/{start}/{limit}  |\n\nPara paginar entre os resultados adicione o parâmetro `page` no final da rota.\n\nMétodo    | Rota                               |\n--------- | -----------------------------------|\nGET       | /logs/{start}/{limit}?page={page}  |\n\nCaso um dos valores não seja numérico ou `start` seja maior que `limit` o servidor apresentará erro."
+					},
+					"response": []
+				},
+				{
+					"name": "listUserLogs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://local.epic.com.br/logs/5/1/100",
+							"protocol": "http",
+							"host": [
+								"local",
+								"epic",
+								"com",
+								"br"
+							],
+							"path": [
+								"logs",
+								"5",
+								"1",
+								"100"
+							]
+						},
+						"description": "Lista os últimos logs de alterações de um usuário\n\nMétodo    | Rota                        |\n--------- | ----------------------------|\nGET       | /logs/{id}/{start}/{limit}  |\n\nPara paginar entre os resultados adicione o parâmetro `page` no final da rota.\n\nMétodo    | Rota                                    |\n--------- | ----------------------------------------|\nGET       | /logs/{id}/{start}/{limit}?page={page}  |\n\nCaso um dos valores não seja numérico ou `start` seja maior que `limit` o servidor apresentará erro. Ou ainda se o valor de `id` não for inteiro o servidor deverá apresentar erro."
+					},
+					"response": []
+				}
+			],
+			"description": "Rotas usadas para gerenciamento e consulta dos logs dos usuários.",
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
