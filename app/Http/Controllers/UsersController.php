@@ -11,11 +11,6 @@ use App\Models\UsersLogs;
 class UsersController extends Controller
 {
 
-    public function index () 
-    {
-        echo "INDEX";
-    }
-    
     // list all users
     public function list () 
     {
@@ -29,19 +24,26 @@ class UsersController extends Controller
 
         $id = $request->route('id');
 
-        if (Users::find($id)) {
-            // user found
-            $user_data = Users::where('id', $id)
-                ->with('usersLogs', function($q){
-                    $q->orderBy('created_at', 'DESC');
-                    $q->take(5);
-                })->get()->first(); 
-
-            return response($user_data, 200);
+        if (is_numeric($id)) {
+            
+            if (Users::find($id)) {
+                // user found
+                $user_data = Users::where('id', $id)
+                    ->with('usersLogs', function($q){
+                        $q->orderBy('created_at', 'DESC');
+                        $q->take(5);
+                    })->get()->first(); 
+    
+                return response($user_data, 200);
+    
+            } else {
+                // user not found
+                return response('Usuário não encontrado.', 500);
+            }
 
         } else {
-            // user not found
-            return response('Usuário não encontrado.', 500);
+            // id is not a number
+            return response('O valor de id precisa ser numérico', 500);
         }
 
     }
@@ -52,26 +54,34 @@ class UsersController extends Controller
 
         $data = $request->validated();
         $id = $request->route('id');
+        
+        if (is_numeric($id)) {
 
-        if (Users::find($id)) {
-            
-            // user found
-            $user_logs = new UsersLogs();
-            $user_logs->data_old = Users::find($id)->toJson();
+            if (Users::find($id)) {
+                
+                // user found
+                $user_logs = new UsersLogs();
+                $user_logs->data_old = Users::find($id)->toJson();
 
-            // update register
-            if (Users::whereId($id)->update($data)) {
+                // update register
+                if (Users::whereId($id)->update($data)) {
 
-                $user = Users::find($id);
-                $user_logs->data_new = Users::find($id)->toJson();
-                $user->usersLogs()->save($user_logs);
+                    $user = Users::find($id);
+                    $user_logs->data_new = Users::find($id)->toJson();
+                    $user->usersLogs()->save($user_logs);
 
-                return response('Registro alterado com sucesso.', 200);
+                    // user updated successfully 
+                    return response('Registro alterado com sucesso.', 200);
+                }
+
+            } else {
+                // user not found
+                return response('Usuário não encontrado.', 500);
             }
 
         } else {
-            // User not found
-            return response('Usuário não encontrado.', 500);
+            // id value is not a number
+            return response('O valor de id precisa ser numérico.', 500);
         }
 
     }
@@ -94,14 +104,19 @@ class UsersController extends Controller
     {
 
         $id = $request->route('id');
-        
-        if ($user = Users::find($id)) {
-            // user exists
-            $user->delete();
-            return response('Registro deletado com sucesso', 200);
+
+        if(is_numeric($id)) {
+            if ($user = Users::find($id)) {
+                // user exists
+                $user->delete();
+                return response('Registro deletado com sucesso', 200);
+            } else {
+                // user do not exists
+                return response('Registro não encontrado.', 500);
+            }
         } else {
-            // user do not exists
-            return response('Registro não encontrado.', 500);
+            // id is not a number
+            return response('O valor de id precisa ser numérico.', 500);
         }
 
     }

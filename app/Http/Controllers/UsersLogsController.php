@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UsersCreateRequest;
-use App\Http\Requests\UsersUpdateRequest;
 use Illuminate\Http\Request;
 use App\Models\Users;
 use App\Models\UsersLogs;
@@ -17,7 +15,7 @@ class UsersLogsController extends Controller
         $limit = $request->route('limit');
 
        if  (! is_numeric($start) || ! is_numeric($limit)) {
-            // limit or start aren't numbers
+            // limit or start are not numbers
             return response('Os valores de start e limit precisam ser numéricos.', 500);
 
        } else if ($limit <= $start) {
@@ -46,15 +44,19 @@ class UsersLogsController extends Controller
         $start = $request->route('start');
         $limit = $request->route('limit');
 
-       if (! is_numeric($start) || ! is_numeric($limit)) {
+        if (! is_numeric($id)) {
+            // id is not a number
+            return response('O valor de id precisa ser numérico.', 500);
+       
+        } else if (! is_numeric($start) || ! is_numeric($limit)) {
             // limit or start aren't numbers
             return response('Os valores de start e limit precisam ser numéricos.', 500);
 
-       } else if ($limit <= $start) {
+        } else if ($limit <= $start) {
             // limit is lower or equal to start
-           return response('O número limit não pode ser menor ou igual ao start.', 500);
+            return response('O número limit não pode ser menor ou igual ao start.', 500);
 
-       } else {
+        } else {
             // limit is greater than start and they are both numbers
             $start = $start - 1;
             $limit = $limit - 1;
@@ -73,8 +75,7 @@ class UsersLogsController extends Controller
                 // user is not found
                 return response('Usuário não encontrado.', 500);
             }
-
-       }
+        }
        
     }
 }
