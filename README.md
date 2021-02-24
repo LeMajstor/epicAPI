@@ -2,7 +2,7 @@
 
 A Epic_API é uma API REST que possibilita o gerenciamento de usuários, sendo possível adicionar, editar e excluir novos registros.Também contempla a criação automática de logs de alterações para cada usuário.
 
-A documentação completa pode ser encontrada na minha [conta do Postman](https://www.postman.com/explore/template/14708/epicapi) A Collection está publicada neste repositório.
+A documentação completa pode ser encontrada na minha [conta do Postman](https://documenter.getpostman.com/view/13579307/TVmHFLg7) A Collection está publicada neste repositório.
 
 ## Getting started
 
